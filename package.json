@@ -22,6 +22,8 @@
         "wdio-eslinter-service": "^0.0.4"
     },
     "scripts": {
-        "wdio": "wdio run test/wdio.conf.ts"
+        "wdio": "wdio run test/wdio.conf.ts",
+        "lint": "prettier . && eslint .",
+        "lint:fix": "prettier . --write &&  eslint . --fix"
     }
 }
