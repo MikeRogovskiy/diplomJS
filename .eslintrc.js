@@ -12,14 +12,16 @@ module.exports = {
     "overrides": [
     ],
     "parser": "@typescript-eslint/parser",
+    root: true,
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
     "plugins": [
+        "jest",
         "@typescript-eslint"
     ],
     "rules": {
     }
 }
-  
+    
