@@ -1,9 +1,17 @@
 export class LoginPage {
+  browser: WebdriverIO.Browser;
+  constructor(browser) {
+    this.browser = browser;
+  }
+
   get selectors() {
     return {
-      registerButton:
-        '//*[@id="auth-container"]/div/div[2]/div/form/div[4]/div[1]/a',
+      form: '//*[@id="auth-container"]/div/div[2]/div/form',
     };
+  }
+
+  async isFormVisible() {
+    return this.browser.$(this.selectors.form).waitForDisplayed({});
   }
 
   //     async isRegisterButtonVisible(): Promise<boolean> {
