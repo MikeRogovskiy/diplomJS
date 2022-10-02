@@ -2,7 +2,7 @@
 
 export class MainPage {
   browser: WebdriverIO.Browser;
-  constructor(browser) {
+  constructor(browser: WebdriverIO.Browser) {
     this.browser = browser;
   }
   get selectors() {

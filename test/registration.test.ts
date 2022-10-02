@@ -4,17 +4,17 @@ import { MainPage } from "./pageobjects/MainPage";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { remote } from "webdriverio";
 
-const sleep = (x) => new Promise((resolve) => setTimeout(resolve, x));
+const sleep = (x: number) => new Promise((resolve) => setTimeout(resolve, x));
 
 jest.setTimeout(60000);
 
 describe("Registration", () => {
-  let mainPage;
-  let registerPage;
-  let confirmationPage;
-  let userData;
-  let browser;
-  let loginPage;
+  let mainPage: MainPage;
+  let registerPage: RegisterPage;
+  // let confirmationPage;
+  // let userData;
+  let browser: WebdriverIO.Browser;
+  let loginPage: LoginPage;
   beforeEach(async () => {
     browser = await remote({
       capabilities: {
