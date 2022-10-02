@@ -10,7 +10,7 @@ let browser;
     },
   });
 
-  await browser.url("https://xvjhzt.csb.app/");
+  await browser.url("https://www.onliner.by/");
   await browser.$("input").waitForExist({
     timeout: 5000,
   });

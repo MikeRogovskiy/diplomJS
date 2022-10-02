@@ -12,14 +12,19 @@ describe("Registration", () => {
   let browser;
   let loginPage;
   beforeEach(async () => {
+    jest.setTimeout(60000);
     browser = await remote({
       capabilities: {
         browserName: "chrome",
       },
     });
+    // await browser.url("https://www.onliner.by/");
+    await browser.$("input").waitForExist({
+      timeout: 7000,
+    });
     mainPage = new MainPage(browser);
-    loginPage = new LoginPage();
-    registerPage = new RegisterPage();
+    loginPage = new LoginPage(browser);
+    registerPage = new RegisterPage(browser);
     confirmationPage = new confirmationPage();
     userData = await genUserData();
   });
@@ -27,24 +32,28 @@ describe("Registration", () => {
     await browser.deleteSession();
   });
 
-  it("can register new user", async () => {
+  it("can open login page from main ", async () => {
     await mainPage.open();
 
     expect(await mainPage.isLoginButtonVisible()).toBe(true);
 
     await mainPage.clickLoginButton();
+
     expect(await loginPage.isActive()).toBe(true);
     expect(await loginPage.isFormVisible()).toBe(true);
+  });
 
-    // await LoginPage.open();
+  it("can open register page from login", async () => {
+    await loginPage.open();
 
-    // expect(await mainPage.isRegisterButtonVisible()).toBe(true);
-
+    expect(await mainPage.isRegisterButtonVisible()).toBe(true);
     await mainPage.clickRegistrationButton();
 
     expect(await registerPage.isActive()).toBe(true);
     expect(await registerPage.isFormVisible()).toBe(true);
+  });
 
+  it("registration page actions", async () => {
     await registerPage.fillLogin(userData.login);
     await registerPage.fillEmail(userData.email);
     await registerPage.fillPassword(userData.password);
