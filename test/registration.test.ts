@@ -1,18 +1,25 @@
 import { LoginPage } from "./pageobjects/LoginPage";
 import { RegisterPage } from "./pageobjects/RegisterPage";
 import { MainPage } from "./pageobjects/MainPage";
+import { GenUserData } from "./pageobjects/GenUserData";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { remote } from "webdriverio";
+// import {
+//     signUpForm,
+//     checkSuccessRedirect,
+//     getEmailWithConfirmationLink,
+//     openConfirmationLink,
+//     generateUserDataWithEmail,
+// } from "./pageobjects/UserData";
+jest.setTimeout(30_000);
 
 const sleep = (x: number) => new Promise((resolve) => setTimeout(resolve, x));
-
-jest.setTimeout(60000);
 
 describe("Registration", () => {
   let mainPage: MainPage;
   let registerPage: RegisterPage;
   // let confirmationPage;
-  // let userData;
+  let userData: { email: string; password: any };
   let browser: WebdriverIO.Browser;
   let loginPage: LoginPage;
   beforeEach(async () => {
@@ -22,15 +29,12 @@ describe("Registration", () => {
       },
       logLevel: "trace",
     });
-    // await browser.url("https://www.onliner.by/");
-    // await browser.$("input").waitForExist({
-    //   timeout: 7000,
-    // });
+
     mainPage = new MainPage(browser);
     loginPage = new LoginPage(browser);
     registerPage = new RegisterPage(browser);
     // confirmationPage = new confirmationPage();
-    // userData = await genUserData();
+    userData = new GenUserData(browser);
   });
   afterEach(async () => {
     await browser.deleteSession();
@@ -45,21 +49,39 @@ describe("Registration", () => {
   });
 
   it("can open register page from login", async () => {
-    await loginPage.open();
+    await mainPage.open();
+    await mainPage.clickLoginButton();
+    // await loginPage.open();
 
-    expect(await mainPage.isRegisterButtonVisible()).toBe(true);
-    await mainPage.clickRegistrationButton();
+    // expect(await loginPage.isRegisterButtonVisible()).toBe(false);
+    await loginPage.clickRegisterButton();
 
-    expect(await registerPage.isActive()).toBe(true);
+    // expect(await registerPage.isActive()).toBe(true);
     expect(await registerPage.isFormVisible()).toBe(true);
   });
 
-  it("registration page actions", async () => {
-    await registerPage.fillLogin(userData.login);
+  it("registration new user", async () => {
+    // await registerPage.fillLogin(userData.login);
+
+    await mainPage.open();
+    await mainPage.clickLoginButton();
+
     await registerPage.fillEmail(userData.email);
     await registerPage.fillPassword(userData.password);
     await registerPage.fillPasswordConfirmation(userData.password);
     await registerPage.clickUSerAgreementCheckbox();
     await registerPage.clickRegisterButton();
   });
+
+  // it("can create new user", async () => {
+  //     const userData = await generateUserDataWithEmail();
+
+  //     const signUpResponse = await signUpForm(userData);
+
+  //     await checkSuccessRedirect(signUpResponse);
+
+  //     const link = await getEmailWithConfirmationLink(userData.email);
+
+  //     await openConfirmationLink(link);
+  // });
 });

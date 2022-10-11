@@ -1,5 +1,3 @@
-// import { getBrowser } from '../specs/browser'
-
 export class MainPage {
   browser: WebdriverIO.Browser;
   constructor(browser: WebdriverIO.Browser) {
@@ -7,17 +5,16 @@ export class MainPage {
   }
   get selectors() {
     return {
+      button: '//*[@id="auth-container"]/div/div[2]/div/form/div[4]/div[1]/a',
       loginButton:
         "/html/body/div[1]/div/div/div/header/div[3]/div/div[2]/div[2]/div[1]/div/div/div[1]",
     };
   }
   async open() {
-    // await this.browser.url("https://www.onliner.by/");
-    // we don not use await here, as wdio never ends this method for onliner page (for some reason)
     this.browser.url("https://www.onliner.by");
-    // await browser.$("input").waitForExist({
-    //     timeout: 5000,
-    // });
+    this.browser.$(this.selectors.loginButton).waitForExist({
+      timeout: 7000,
+    });
   }
 
   async isLoginButtonVisible(): Promise<boolean> {
