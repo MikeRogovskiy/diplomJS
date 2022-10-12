@@ -1,17 +1,22 @@
-import { ChainablePromiseElement } from 'webdriverio';
-
-import Page from './page';
-
 /**
  * sub page containing specific selectors and methods for a specific page
  */
-class SecurePage extends Page {
-    /**
-     * define selectors using getter methods
-     */
-    public get flashAlert () {
-        return $('#flash');
-    }
-}
+export class SecurePage {
+  browser: WebdriverIO.Browser;
+  link: string;
+  constructor(browser: WebdriverIO.Browser, secureLink: string) {
+    this.browser = browser;
+    this.link = secureLink;
+  }
 
-export default new SecurePage();
+  async open() {
+    await this.browser.url(this.link);
+  }
+
+  /**
+   * define selectors using getter methods
+   */
+  public get flashAlert() {
+    return $("#flash");
+  }
+}
