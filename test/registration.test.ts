@@ -1,16 +1,10 @@
 import { LoginPage } from "./pageobjects/LoginPage";
 import { RegisterPage } from "./pageobjects/RegisterPage";
 import { MainPage } from "./pageobjects/MainPage";
-import { GenUserData } from "./pageobjects/GenUserData";
+import { getUserData } from "../utils/getUserData";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { remote } from "webdriverio";
-// import {
-//     signUpForm,
-//     checkSuccessRedirect,
-//     getEmailWithConfirmationLink,
-//     openConfirmationLink,
-//     generateUserDataWithEmail,
-// } from "./pageobjects/UserData";
+
 jest.setTimeout(30_000);
 
 const sleep = (x: number) => new Promise((resolve) => setTimeout(resolve, x));
@@ -18,8 +12,8 @@ const sleep = (x: number) => new Promise((resolve) => setTimeout(resolve, x));
 describe("Registration", () => {
   let mainPage: MainPage;
   let registerPage: RegisterPage;
-  // let confirmationPage;
-  let userData: { email: string; password: any };
+  // // let confirmationPage;
+  let userData: { email: string; password: string };
   let browser: WebdriverIO.Browser;
   let loginPage: LoginPage;
   beforeEach(async () => {
@@ -34,11 +28,11 @@ describe("Registration", () => {
     loginPage = new LoginPage(browser);
     registerPage = new RegisterPage(browser);
     // confirmationPage = new confirmationPage();
-    userData = new GenUserData(browser);
+    userData = await getUserData();
   });
-  afterEach(async () => {
-    await browser.deleteSession();
-  });
+  // afterEach(async () => {
+  //     await browser.deleteSession();
+  // });
 
   it("can open login page from main ", async () => {
     await mainPage.open();
@@ -65,23 +59,19 @@ describe("Registration", () => {
 
     await mainPage.open();
     await mainPage.clickLoginButton();
+    await loginPage.clickRegisterButton();
+    expect(await registerPage.isFormVisible()).toBe(true);
 
     await registerPage.fillEmail(userData.email);
     await registerPage.fillPassword(userData.password);
     await registerPage.fillPasswordConfirmation(userData.password);
     await registerPage.clickUSerAgreementCheckbox();
     await registerPage.clickRegisterButton();
+    expect(await registerPage.expectFormVisible()).toBe(true);
   });
 
-  // it("can create new user", async () => {
-  //     const userData = await generateUserDataWithEmail();
-
-  //     const signUpResponse = await signUpForm(userData);
-
-  //     await checkSuccessRedirect(signUpResponse);
-
-  //     const link = await getEmailWithConfirmationLink(userData.email);
-
-  //     await openConfirmationLink(link);
+  // it("confirmation page", async () => {
+  //     await await mainPage.open();
+  //     await mainPage.clickLoginButton();
   // });
 });

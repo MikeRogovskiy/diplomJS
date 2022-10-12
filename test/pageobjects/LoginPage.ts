@@ -6,7 +6,7 @@ export class LoginPage {
 
   get selectors() {
     return {
-      form: '//*[@id="auth-container"]/div/div[2]/div/form',
+      form: '//*[@id="auth-container"]/div/div[2]',
       button: '//*[@id="auth-container"]/div/div[2]/div/form/div[4]/div[1]/a',
     };
   }

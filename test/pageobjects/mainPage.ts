@@ -5,9 +5,7 @@ export class MainPage {
   }
   get selectors() {
     return {
-      button: '//*[@id="auth-container"]/div/div[2]/div/form/div[4]/div[1]/a',
-      loginButton:
-        "/html/body/div[1]/div/div/div/header/div[3]/div/div[2]/div[2]/div[1]/div/div/div[1]",
+      loginButton: '//*[@id="userbar"]/div[1]/div/div/div[1]',
     };
   }
   async open() {
