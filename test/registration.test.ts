@@ -1,7 +1,11 @@
+import { SecurePage } from "./pageobjects/secure.page";
 import { LoginPage } from "./pageobjects/LoginPage";
 import { RegisterPage } from "./pageobjects/RegisterPage";
 import { MainPage } from "./pageobjects/MainPage";
-import { getUserData } from "../utils/getUserData";
+import {
+  getEmailWithConfirmationLink,
+  getUserData,
+} from "../utils/getUserData";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { remote } from "webdriverio";
 
@@ -69,6 +73,11 @@ describe("Registration", () => {
     await registerPage.clickUSerAgreementCheckbox();
     await registerPage.clickRegisterButton();
     expect(await registerPage.expectFormVisible()).toBe(true);
+
+    const link = await getEmailWithConfirmationLink();
+    const securePage = new SecurePage(browser, link);
+
+    // ....
   });
 
   // it("confirmation page", async () => {
