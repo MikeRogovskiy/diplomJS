@@ -1,18 +1,21 @@
 import { LoginPage } from "./pageobjects/LoginPage";
 import { RegisterPage } from "./pageobjects/RegisterPage";
 import { MainPage } from "./pageobjects/MainPage";
-import { getUserData } from "../utils/getUserData";
+import { SecurePage } from "./pageobjects/SecurePage";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { remote } from "webdriverio";
+import {
+  getEmailWithConfirmationLink,
+  getUserData,
+} from "../utils/getUserData";
 
-jest.setTimeout(30_000);
+jest.setTimeout(35_000);
 
 const sleep = (x: number) => new Promise((resolve) => setTimeout(resolve, x));
 
 describe("Registration", () => {
   let mainPage: MainPage;
   let registerPage: RegisterPage;
-  // // let confirmationPage;
   let userData: { email: string; password: string };
   let browser: WebdriverIO.Browser;
   let loginPage: LoginPage;
@@ -27,10 +30,9 @@ describe("Registration", () => {
     mainPage = new MainPage(browser);
     loginPage = new LoginPage(browser);
     registerPage = new RegisterPage(browser);
-    // confirmationPage = new confirmationPage();
     userData = await getUserData();
   });
-  afterEach(async () => {
+  afterAll(async () => {
     await browser.deleteSession();
     await sleep(5000);
   });
@@ -69,9 +71,15 @@ describe("Registration", () => {
     await registerPage.clickUSerAgreementCheckbox();
     await registerPage.clickRegisterButton();
     expect(await registerPage.expectFormVisible()).toBe(true);
+    const link = await getEmailWithConfirmationLink();
+    const securePage = new SecurePage(browser, link);
+    await securePage.open();
+    expect(await securePage.browserUrl()).toEqual(
+      "https://profile.onliner.by/"
+    );
   });
 
-  // it("confirmation page", async () => {
+  // it("confirmation page", async () => {=
   //     await await mainPage.open();
   //     await mainPage.clickLoginButton();
   // });
