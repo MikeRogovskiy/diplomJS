@@ -2,7 +2,8 @@ module.exports = {
     "env": {
         "browser": true,
         "es2021": true,
-        "node": true
+        "node": true,
+        "jest": true
     },
     "extends": [
         "eslint:recommended",
@@ -12,14 +13,16 @@ module.exports = {
     "overrides": [
     ],
     "parser": "@typescript-eslint/parser",
+    root: true,
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
     "plugins": [
+        "jest",
         "@typescript-eslint"
     ],
     "rules": {
     }
 }
-  
+    
