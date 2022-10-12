@@ -30,9 +30,10 @@ describe("Registration", () => {
     // confirmationPage = new confirmationPage();
     userData = await getUserData();
   });
-  // afterEach(async () => {
-  //     await browser.deleteSession();
-  // });
+  afterEach(async () => {
+    await browser.deleteSession();
+    await sleep(5000);
+  });
 
   it("can open login page from main ", async () => {
     await mainPage.open();
