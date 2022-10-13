@@ -16,8 +16,11 @@ export class PersonalDataPage {
         '//*[@id="auth-container"]/div/div[2]/form/div[2]/div/div[2]/div[2]/div/div/div/div/div/div/input',
       acceptButtonField:
         '//*[@id="auth-container"]/div/div[2]/form/div[4]/button',
+      expectFormNikname:
+        '//*[@id="container"]/div/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div/div/div[1]/div/div[1]/div[1]/div/div[2]/div/span',
     };
   }
+
   async formNicknameField(myNickname: Value | Value[]) {
     return await (
       await this.browser.$(this.selectors.nicknameField)
@@ -37,5 +40,8 @@ export class PersonalDataPage {
     return await (
       await this.browser.$(this.selectors.acceptButtonField)
     ).click();
+  }
+  async expectNikname() {
+    return await this.browser.$(this.selectors.expectFormNikname);
   }
 }

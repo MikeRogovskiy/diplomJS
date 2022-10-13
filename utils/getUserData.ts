@@ -14,7 +14,7 @@ export async function getUserData() {
   };
 }
 export async function newUserName() {
-  const nickname = "mike";
+  const nickname = await mailbox.createEmailAddress();
   const lastname = "mike1";
   const name = "mike2";
 

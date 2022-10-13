@@ -12,6 +12,10 @@ export class ProfilePage {
         '//*[@id="container"]/div/div/div/div/div/div/div/div[2]/div[1]/div/a[3]/div',
     };
   }
+  async open() {
+    return await this.browser.url("https://www.profile.onliner.by");
+  }
+
   async clickPersonalData() {
     return (await this.browser.$(this.selectors.profileButton)).click();
   }

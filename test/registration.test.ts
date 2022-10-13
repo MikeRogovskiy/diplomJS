@@ -12,7 +12,7 @@ import {
   newUserName,
 } from "../utils/getUserData";
 
-jest.setTimeout(35_000);
+jest.setTimeout(70_000);
 
 const sleep = (x: number) => new Promise((resolve) => setTimeout(resolve, x));
 
@@ -81,11 +81,13 @@ describe("Registration", () => {
     await registerPage.clickUSerAgreementCheckbox();
     await registerPage.clickRegisterButton();
     expect(await registerPage.expectFormVisible()).toBe(true);
+
     const link = await getEmailWithConfirmationLink();
     const securePage = new SecurePage(browser, link);
     await securePage.open();
-    await sleep(5000);
     expect(await securePage.isFormProfileVisible()).toBe(true);
+
+    await profilePage.open();
 
     await profilePage.clickPersonalData();
     expect(await profilePage.isPersonalDataVisible()).toBe(true);
@@ -96,5 +98,8 @@ describe("Registration", () => {
     await personalDataPage.formLastnameField(userName.lastname);
     await personalDataPage.formNameField(userName.name);
     await personalDataPage.formAccept();
+    expect(await personalDataPage.expectNikname()).toHaveProperty(
+      userName.nickname
+    );
   });
 });
