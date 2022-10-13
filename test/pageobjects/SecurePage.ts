@@ -7,17 +7,13 @@ export class SecurePage {
   }
   get selectors() {
     return {
-      form: "/html/body/div[1]/div/div/div/div/div/div/div/div/div[2]",
+      form: '//*[@id="container"]/div/div/div/div/div/div/div/div[2]/div[2]',
     };
   }
   async open() {
     await this.browser.url(this.link);
   }
-
-  async profileTab(): Promise<boolean> {
-    return await (await this.link.$(this.selectors.form)).isDisplayed();
-  }
-  async browserUrl() {
-    return this.browser.url(this.link);
+  async isFormProfileVisible() {
+    return this.browser.$(this.selectors.form).waitForDisplayed({});
   }
 }

@@ -2,11 +2,14 @@ import { LoginPage } from "./pageobjects/LoginPage";
 import { RegisterPage } from "./pageobjects/RegisterPage";
 import { MainPage } from "./pageobjects/MainPage";
 import { SecurePage } from "./pageobjects/SecurePage";
+import { ProfilePage } from "./pageobjects/ProfilePage";
+import { PersonalDataPage } from "./pageobjects/PersonalDataPage";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { remote } from "webdriverio";
 import {
   getEmailWithConfirmationLink,
   getUserData,
+  newUserName,
 } from "../utils/getUserData";
 
 jest.setTimeout(35_000);
@@ -17,8 +20,12 @@ describe("Registration", () => {
   let mainPage: MainPage;
   let registerPage: RegisterPage;
   let userData: { email: string; password: string };
+  let userName: { nickname: string; lastname: string; name: string };
   let browser: WebdriverIO.Browser;
   let loginPage: LoginPage;
+  let personalDataPage: PersonalDataPage;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  let profilePage: ProfilePage;
   beforeEach(async () => {
     browser = await remote({
       capabilities: {
@@ -30,12 +37,15 @@ describe("Registration", () => {
     mainPage = new MainPage(browser);
     loginPage = new LoginPage(browser);
     registerPage = new RegisterPage(browser);
+    profilePage = new ProfilePage(browser);
+    personalDataPage = new PersonalDataPage(browser);
     userData = await getUserData();
+    userName = await newUserName();
   });
-  afterAll(async () => {
-    await browser.deleteSession();
-    await sleep(5000);
-  });
+  //   afterAll(async () => {
+  //     await browser.deleteSession();
+  //     await sleep(5000);
+  //   });
 
   it("can open login page from main ", async () => {
     await mainPage.open();
@@ -74,13 +84,17 @@ describe("Registration", () => {
     const link = await getEmailWithConfirmationLink();
     const securePage = new SecurePage(browser, link);
     await securePage.open();
-    expect(await securePage.browserUrl()).toEqual(
-      "https://profile.onliner.by/"
-    );
-  });
+    await sleep(5000);
+    expect(await securePage.isFormProfileVisible()).toBe(true);
 
-  // it("confirmation page", async () => {=
-  //     await await mainPage.open();
-  //     await mainPage.clickLoginButton();
-  // });
+    await profilePage.clickPersonalData();
+    expect(await profilePage.isPersonalDataVisible()).toBe(true);
+    await profilePage.clickChangeData();
+    expect(await profilePage.isClickChangeDataVisible()).toBe(true);
+
+    await personalDataPage.formNicknameField(userName.nickname);
+    await personalDataPage.formLastnameField(userName.lastname);
+    await personalDataPage.formNameField(userName.name);
+    await personalDataPage.formAccept();
+  });
 });

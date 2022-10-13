@@ -13,6 +13,17 @@ export async function getUserData() {
     passwordConfirm,
   };
 }
+export async function newUserName() {
+  const nickname = "mike";
+  const lastname = "mike1";
+  const name = "mike2";
+
+  return {
+    nickname,
+    lastname,
+    name,
+  };
+}
 export async function getEmailWithConfirmationLink() {
   let emailsList = [];
   while (emailsList.length === 0) {
