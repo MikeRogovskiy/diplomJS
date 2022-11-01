@@ -14,16 +14,13 @@ export async function getUserData() {
   };
 }
 export async function newUserName() {
-  const nickname = await mailbox.createEmailAddress();
-  const lastname = "mike1";
-  const name = "mike2";
-
   return {
-    nickname,
-    lastname,
-    name,
+    nickname: `nickname${Math.random()}`,
+    lastname: `nickname${Math.random()}`,
+    name: `nickname${Math.random()}`,
   };
 }
+
 export async function getEmailWithConfirmationLink() {
   let emailsList = [];
   while (emailsList.length === 0) {
